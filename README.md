@@ -1,3 +1,3 @@
 # mini_project
 :))))
-play ground 2
+playgroung2 یه چند تا مشکل داشت که درستشون کردم
