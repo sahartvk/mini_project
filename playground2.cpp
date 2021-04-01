@@ -8,30 +8,30 @@ playground2::playground2()
 {
 	for (int i = 0; i < 5; i++)
 		for (int j = 0; j < 5; j++)
-			playground[i][j] = '-1';
-	playground[0][0] = '1';
-	playground[0][2] = '2';
-	playground[0][4] = '3';
-	playground[1][1] = '4';
-	playground[1][2] = '5';
-	playground[1][3] = '6';
-	playground[2][0] = '7';
-	playground[2][1] = '8';
-	playground[2][3] = '9';
-	playground[2][4] = '10';
-	playground[3][1] = '11';
-	playground[3][2] = '12';
-	playground[3][3] = '13';
-	playground[4][0] = '14';
-	playground[4][2] = '15';
-	playground[4][4] = '16';
+			playground[i][j] = "-1";
+	playground[0][0] = "1";
+	playground[0][2] = "2";
+	playground[0][4] = "3";
+	playground[1][1] = "4";
+	playground[1][2] = "5";
+	playground[1][3] = "6";
+	playground[2][0] = "7";
+	playground[2][1] = "8";
+	playground[2][3] = "9";
+	playground[2][4] = "10";
+	playground[3][1] = "11";
+	playground[3][2] = "12";
+	playground[3][3] = "13";
+	playground[4][0] = "14";
+	playground[4][2] = "15";
+	playground[4][4] = "16";
 }
 bool playground2::gameover()
 {
-	
+
 	if (check() == true)
 		return true;
-	if (leftMoves == 0)
+	if (leftMoves() == 0)
 		return true;
 
 	return false;
@@ -42,12 +42,12 @@ int playground2::leftMoves()
 	for (int i = 0; i < 5; i++)
 		for (int j = 0; j < 5; j++)
 		{
-			if (playground[i][j] == '*' || playground[i][j] == '#')
+			if (playground[i][j] == "*" || playground[i][j] == "#")
 				leftmoves--;
 		}
 	return leftmoves;
 }
-bool playground2::push_back(char n,char m)
+bool playground2::push_back(string n, string m)
 {
 	for (int i = 0; i < 5; i++)
 		for (int j = 0; j < 5; j++)
@@ -67,9 +67,9 @@ bool playground2::check()
 		if (i == 2)
 			continue;
 		for (int j = 0; j < 5; j++)
-			if (playground[i][j] == '*')
+			if (playground[i][j] == "*")
 				star++;
-			else if (playground[i][j] == '#')
+			else if (playground[i][j] == "#")
 				numsign++;
 		if (star == 3 || numsign == 3)
 			return true;
@@ -80,9 +80,9 @@ bool playground2::check()
 		if (j == 2)
 			continue;
 		for (int i = 0; i < 5; i++)
-			if (playground[i][j] == '*')
+			if (playground[i][j] == "*")
 				star++;
-			else if (playground[i][j] == '#')
+			else if (playground[i][j] == "#")
 				numsign++;
 		if (star == 3 || numsign == 3)
 			return true;

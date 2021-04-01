@@ -5,10 +5,10 @@ class playground2
 public:
 	playground2();
 	bool gameover();
-	bool push_back(char n, char m);
+	bool push_back(std::string n, std::string m);
 private:
 	std::string name;
-	char playground[5][5];
+	std::string playground[5][5];
 	int leftMoves();
 	bool check();
 
