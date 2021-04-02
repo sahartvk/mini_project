@@ -26,6 +26,15 @@ playground2::playground2()
 	playground[4][2] = "15";
 	playground[4][4] = "16";
 }
+void playground2:: show() {
+	cout << "\t\t\t" << playground[0][0] << " _____" << playground[0][2] << " _____" << playground[0][4] << "\n";
+	cout << "\t\t\t|      |      |  \n";
+	cout << "\t\t\t|   " << playground[1][1] << " _" << playground[1][2] << " _" << playground[1][3] << "   |" << " \n";
+	cout << "\t\t\t" << playground[2][0] << " _ " << playground[2][1] << "     " << playground[2][3] << " _ " << playground[2][4] << " \n";
+	cout << "\t\t\t|   " << playground[3][1] << " _" << playground[3][2] << " _" << playground[3][3] << "   |" << " \n";
+	cout << "\t\t\t|      |      |  \n";
+	cout << "\t\t\t" << playground[4][0] << " _____" << playground[4][2] << " _____" << playground[4][4] << " \n\n";
+}
 bool playground2::gameover()
 {
 
