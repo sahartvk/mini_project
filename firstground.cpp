@@ -6,29 +6,30 @@ class playground1
 {
 public:
 	playground1();
-	void showboard(char[][3]);
-	bool gameover(char[][3]);
+	void showboard();
+	bool gameover();
 	bool win();
 	bool push_back(char n, char m);
-	bool rowcrossed(char[][3]);
-	bool columncrossed(char[][3]);
-	bool diagonalcrossed(char[][3]);
+	
 private:
 	string name;
-	char playground[3][3];
+	string playground[3][3];
 	int leftMoves();
+	bool rowcrossed();
+	bool columncrossed();
+	bool diagonalcrossed();
 };
 playground1::playground1()
 {
-	playground[0][0] = '1';
-	playground[0][1] = '2';
-	playground[0][2] = '3';
-	playground[1][0] = '4';
-	playground[1][1] = '5';
-	playground[1][2] = '6';
-	playground[2][0] = '7';
-	playground[2][1] = '8';
-	playground[2][2] = '9';
+	playground[0][0] = "1"
+	playground[0][1] = "2";
+	playground[0][2] = "3";
+	playground[1][0] = "4";
+	playground[1][1] = "5";
+	playground[1][2] = "6";
+	playground[2][0] = "7";
+	playground[2][1] = "8";
+	playground[2][2] = "9";
 }
 void playground1::showboard(char playground[3][3])
 {
@@ -48,6 +49,8 @@ void playground1::showboard(char playground[3][3])
 
 bool playground1::gameover(char playground[][3])
 {
+	if (win() == true)
+		return true;
 	if (leftMoves() == 0)
 		return true;
 
