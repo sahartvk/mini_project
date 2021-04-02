@@ -6,48 +6,49 @@ class playground3
 {
 public:
 	playground3();
-	void showboard(char[][7]);
-	bool gameover(char[][7]);
+	void showboard();
+	bool finish();
 	bool win();
-	bool push_back(char n, char m);
-	bool rowcrossed(char[][7]);
-	bool columncrossed(char[][7]);
-	bool diagonalcrossed(char[][7]);
+	bool push_back(string n, string m);
+	
 private:
 	string name;
-	char playground[7][7];
+	string playground[7][7];
 	int leftMoves();
+	bool rowcrossed();
+	bool columncrossed();
+	bool diagonalcrossed();
 };
 playground3::playground3()
 {
 	for (int i = 0; i < 7; i++)
 		for (int j = 0; j < 7; j++)
-			playground[i][j] = '-1';
-	playground[0][0] = '1';
-	playground[0][3] = '2';
-	playground[0][6] = '3';
-	playground[1][1] = '4';
-	playground[1][3] = '5';
-	playground[1][5] = '6';
-	playground[2][2] = '7';
-	playground[2][3] = '8';
-	playground[2][4] = '9';
-	playground[3][0] = '10';
-	playground[3][1] = '11';
-	playground[3][2] = '12';
-	playground[3][4] = '13';
-	playground[3][5] = '14';
-	playground[3][6] = '15';
-	playground[4][2] = '16';
-	playground[4][3] = '17';
-	playground[4][4] = '18';
-	playground[5][1] = '19';
-	playground[5][5] = '20';
-	playground[6][0] = '21';
-	playground[6][6] = '22';
+			playground[i][j] = "-1";
+	playground[0][0] = "1";
+	playground[0][3] = "2";
+	playground[0][6] = "3";
+	playground[1][1] = "4";
+	playground[1][3] = "5";
+	playground[1][5] = "6";
+	playground[2][2] = "7";
+	playground[2][3] = "8";
+	playground[2][4] = "9";
+	playground[3][0] = "10";
+	playground[3][1] = "11";
+	playground[3][2] = "12";
+	playground[3][4] = "13";
+	playground[3][5] = "14";
+	playground[3][6] = "15";
+	playground[4][2] = "16";
+	playground[4][3] = "17";
+	playground[4][4] = "18";
+	playground[5][1] = "19";
+	playground[5][5] = "20";
+	playground[6][0] = "21";
+	playground[6][6] = "22";
 	
 }
-void playground3::showboard(char playground[7][7])
+void playground3::showboard()
 {
 	printf("\n\n");
 	cout << "\t\t\t" << playground[0][0] << "\t\t\t" << playground[0][3] << " \t\t\t " << playground[0][6] << " \n\n";
@@ -59,15 +60,17 @@ void playground3::showboard(char playground[7][7])
 	cout << "\t\t\t " << playground[6][0] << "\t\t\t    \t\t\t " << playground[6][6] << " \n";
 }
 
-bool playground3::gameover(char playground[][7])
+bool playground3::finish()
 {
+	if (win() == true)
+		return true;
 	if (leftMoves() == 0)
 		return true;
 
 	return false;
 }
 bool playground3::win() {
-	return(rowcrossed(playground) || columncrossed(playground) || diagonalcrossed(playground));
+	return(rowcrossed() || columncrossed() || diagonalcrossed());
 }
 
 int playground3::leftMoves()
@@ -76,12 +79,12 @@ int playground3::leftMoves()
 	for (int i = 0; i < 7; i++)
 		for (int j = 0; j < 7; j++)
 		{
-			if (playground[i][j] == '*' || playground[i][j] == '#')
+			if (playground[i][j] == "*" || playground[i][j] == "#")
 				leftmoves--;
 		}
 	return leftmoves;
 }
-bool playground3::push_back(char n, char m)
+bool playground3::push_back(string n, string m)
 {
 	for (int i = 0; i < 7; i++)
 		for (int j = 0; j < 7; j++)
@@ -92,7 +95,7 @@ bool playground3::push_back(char n, char m)
 			}
 	return false;
 }
-bool playground3::rowcrossed(char playground[][7])
+bool playground3::rowcrossed()
 {
 	if (playground[0][0] == playground[0][3] && playground[0][3] == playground[0][6])
 		return true;
@@ -110,7 +113,7 @@ bool playground3::rowcrossed(char playground[][7])
 	return(false);
 }
 
-bool playground3::columncrossed(char playground[][7])
+bool playground3::columncrossed()
 {
 	if (playground[0][0] == playground[3][0] && playground[3][0] == playground[6][0])
 		return true;
@@ -128,7 +131,7 @@ bool playground3::columncrossed(char playground[][7])
 		return true;
 	return(false);
 }
-bool playground3::diagonalcrossed(char playground[][7]) {
+bool playground3::diagonalcrossed() {
 
 	if (playground[0][0] == playground[1][1] && playground[1][1] == playground[2][2])
 		return true;
