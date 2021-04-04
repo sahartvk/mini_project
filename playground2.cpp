@@ -26,7 +26,7 @@ playground2::playground2()
 	playground[4][2] = "O";
 	playground[4][4] = "P";
 }
-void playground2:: show() {
+void playground2:: showboard() {
 	cout << "\t\t\t" << playground[0][0] << " _____" << playground[0][2] << " _____" << playground[0][4] << "\n";
 	cout << "\t\t\t|      |      |  \n";
 	cout << "\t\t\t|   " << playground[1][1] << " _" << playground[1][2] << " _" << playground[1][3] << "   |" << " \n";
