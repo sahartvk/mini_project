@@ -9,22 +9,22 @@ playground2::playground2()
 	for (int i = 0; i < 5; i++)
 		for (int j = 0; j < 5; j++)
 			playground[i][j] = "-1";
-	playground[0][0] = "1";
-	playground[0][2] = "2";
-	playground[0][4] = "3";
-	playground[1][1] = "4";
-	playground[1][2] = "5";
-	playground[1][3] = "6";
-	playground[2][0] = "7";
-	playground[2][1] = "8";
-	playground[2][3] = "9";
-	playground[2][4] = "10";
-	playground[3][1] = "11";
-	playground[3][2] = "12";
-	playground[3][3] = "13";
-	playground[4][0] = "14";
-	playground[4][2] = "15";
-	playground[4][4] = "16";
+	playground[0][0] = "A";
+	playground[0][2] = "B";
+	playground[0][4] = "C";
+	playground[1][1] = "D";
+	playground[1][2] = "E";
+	playground[1][3] = "F";
+	playground[2][0] = "G";
+	playground[2][1] = "H";
+	playground[2][3] = "I";
+	playground[2][4] = "J";
+	playground[3][1] = "K";
+	playground[3][2] = "L";
+	playground[3][3] = "M";
+	playground[4][0] = "N";
+	playground[4][2] = "O";
+	playground[4][4] = "P";
 }
 void playground2:: show() {
 	cout << "\t\t\t" << playground[0][0] << " _____" << playground[0][2] << " _____" << playground[0][4] << "\n";
