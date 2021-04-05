@@ -16,7 +16,7 @@ void connection();
 void chooseGroundOrNot(tcp::socket& sock);
 void chooseGround(tcp::socket& sock);
 void ground(tcp::socket& sock);
-
+void enterid(tcp::socket& sock);
 template<typename PlayGround>
 void game(tcp::socket& sock, PlayGround pg);
 
@@ -29,11 +29,18 @@ void connection()
 	io_service io;
 	tcp::socket sock(io);
 	sock.connect(tcp::endpoint(address::from_string("127.0.0.1"), 1234));
-
+        enterid(sock);
 	//-----------------
 
 	chooseGroundOrNot(sock);
 
+}
+void enterid(tcp::socket& sock) {
+	string ID;
+	cout << "enter Your ID:" << endl;
+	cin >> ID;
+	ID += "\n";
+	write(sock, boost::asio::buffer(ID));
 }
 void chooseGroundOrNot(tcp::socket& sock)
 {
