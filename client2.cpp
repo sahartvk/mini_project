@@ -16,7 +16,7 @@ void connection();
 void chooseGroundOrNot(tcp::socket& sock);
 void chooseGround(tcp::socket& sock);
 void ground(tcp::socket& sock);
-
+void enterid(tcp::socket& sock);
 template<typename PlayGround>
 void game(tcp::socket& sock, PlayGround pg);
 
@@ -29,11 +29,18 @@ void connection()
 	io_service io;
 	tcp::socket sock(io);
 	sock.connect(tcp::endpoint(address::from_string("127.0.0.1"), 1234));
-
+        enterid(sock);
 	//-----------------
 
 	chooseGroundOrNot(sock);
 
+}
+void enterid(tcp::socket& sock) {
+	string ID;
+	cout << "enter Your ID:" << endl;
+	cin >> ID;
+	ID += "\n";
+	write(sock, boost::asio::buffer(ID));
 }
 void chooseGroundOrNot(tcp::socket& sock)
 {
@@ -61,9 +68,9 @@ void chooseGround(tcp::socket& sock)
 	{
 		stop = true;
 		cout << "choose one of the grounds below:\n";
-		cout << "1.playground1\n2.playgroung2\n3.playgrond3\n";
+		cout << "1.playground1\n2.playgroung2\n3.playground3\n";
 		cin >> pg;
-		if (!(pg == "1" || pg == "playground1" || pg == "2" || pg == "playgroung2" || pg == "playgrond3" || pg == "3"))
+		if (!(pg == "1" || pg == "playground1" || pg == "2" || pg == "playgroung2" || pg == "playground3" || pg == "3"))
 		{
 			stop = false;
 			cout << "Invalid play ground, press any ket to try again\n";
@@ -141,7 +148,7 @@ void game(tcp::socket& sock, PlayGround pg)
 			bool push = false;
 			do {
 
-				cout << "your turn, enter one of the numbers:\n";
+				cout << "your turn, enter one of the chracters:\n";
 				cin >> n;
 				//change grround
 				push = pg.push_back(n, me);
