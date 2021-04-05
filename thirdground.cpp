@@ -1,24 +1,9 @@
 #include<iostream>
 #include<string>
+#include"playground3.h"
 using namespace std;
 
-class playground3
-{
-public:
-	playground3();
-	void showboard();
-	bool finish();
-	bool win();
-	bool push_back(string n, string m);
-	
-private:
-	string name;
-	string playground[7][7];
-	int leftMoves();
-	bool rowcrossed();
-	bool columncrossed();
-	bool diagonalcrossed();
-};
+
 playground3::playground3()
 {
 	for (int i = 0; i < 7; i++)
@@ -46,7 +31,7 @@ playground3::playground3()
 	playground[5][5] = "20";
 	playground[6][0] = "21";
 	playground[6][6] = "22";
-	
+
 }
 void playground3::showboard()
 {
@@ -60,7 +45,7 @@ void playground3::showboard()
 	cout << "\t\t\t " << playground[6][0] << "\t\t\t    \t\t\t " << playground[6][6] << " \n";
 }
 
-bool playground3::finish()
+bool playground3::gameover()
 {
 	if (win() == true)
 		return true;
@@ -143,4 +128,3 @@ bool playground3::diagonalcrossed() {
 		return true;
 	return false;
 }
-
