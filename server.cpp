@@ -17,16 +17,17 @@ int main()
 }
 void connection()
 {
-	string ID1, ID2;
+	
 	io_service io;
 	tcp::socket sock1(io);
 	tcp::socket sock2(io);
 	tcp::acceptor acc(io, tcp::endpoint(tcp::v4(), 1234));
+	
 	acc.accept(sock1);
-	ID1=id(sock1);
+	id(sock1);
 	
 	acc.accept(sock2);
-	ID2=id(sock2);
+	id(sock2);
 
 	//---------------------
 	//id
