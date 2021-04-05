@@ -3,6 +3,7 @@
 #include"playground2.h"
 #include"playground1.h"
 #include"playground3.h"
+#include"player.h"
 #include<conio.h>
 #include<thread>
 #include<chrono>
@@ -12,37 +13,41 @@ using namespace std;
 using namespace boost::asio;
 using namespace ip;
 
-void connection();
-void chooseGroundOrNot(tcp::socket& sock);
+void connection(player p1);
+void chooseGroundOrNot(tcp::socket& sock, player p1);
 void chooseGround(tcp::socket& sock);
-void ground(tcp::socket& sock);
-void enterid(tcp::socket& sock);
+void ground(tcp::socket& sock, player p1);
+void enterid(tcp::socket& sock, player p1);
 template<typename PlayGround>
-void game(tcp::socket& sock, PlayGround pg);
+void game(tcp::socket& sock, PlayGround pg, player p1);
 
 int main()
 {
-	connection();
+	player p2;
+	connection(p2);
+	p2.setOff();
 }
-void connection()
+void connection(player p1)
 {
 	io_service io;
 	tcp::socket sock(io);
 	sock.connect(tcp::endpoint(address::from_string("127.0.0.1"), 1234));
-        enterid(sock);
+	enterid(sock,p1);
 	//-----------------
 
-	chooseGroundOrNot(sock);
+	chooseGroundOrNot(sock,p1);
 
 }
-void enterid(tcp::socket& sock) {
+void enterid(tcp::socket& sock, player p1) {
 	string ID;
 	cout << "enter Your ID:" << endl;
 	cin >> ID;
 	ID += "\n";
 	write(sock, boost::asio::buffer(ID));
+	p1.setId(ID);
+	p1.setOn();
 }
-void chooseGroundOrNot(tcp::socket& sock)
+void chooseGroundOrNot(tcp::socket& sock,player p1)
 {
 	boost::asio::streambuf buff;
 	read_until(sock, buff, "\n");
@@ -58,7 +63,7 @@ void chooseGroundOrNot(tcp::socket& sock)
 		turn = 2;
 	}
 
-	ground(sock);
+	ground(sock,p1);
 }
 void chooseGround(tcp::socket& sock)
 {
@@ -68,12 +73,12 @@ void chooseGround(tcp::socket& sock)
 	{
 		stop = true;
 		cout << "choose one of the grounds below:\n";
-		cout << "1.playground1\n2.playgroung2\n3.playground3\n";
+		cout << "1.playground1\n2.playground2\n3.playground3\n";
 		cin >> pg;
-		if (!(pg == "1" || pg == "playground1" || pg == "2" || pg == "playgroung2" || pg == "playground3" || pg == "3"))
+		if (!(pg == "1" || pg == "playground1" || pg == "2" || pg == "playground2" || pg == "playground3" || pg == "3"))
 		{
 			stop = false;
-			cout << "Invalid play ground, press any ket to try again\n";
+			cout << "Invalid play ground, press any key to try again\n";
 			char m = _getch();
 			system("cls");
 		}
@@ -82,7 +87,7 @@ void chooseGround(tcp::socket& sock)
 	write(sock, boost::asio::buffer(pg));
 	system("cls");
 }
-void ground(tcp::socket& sock)
+void ground(tcp::socket& sock,player p1)
 {
 	string g;
 	boost::asio::streambuf buff;
@@ -107,22 +112,22 @@ void ground(tcp::socket& sock)
 	if (g == "1" || g == "playground1")
 	{
 		playground1 pg;
-		game(sock, pg);
+		game(sock, pg,p1);
 	}
 	else if (g == "2" || g == "playground2")
 	{
 		playground2 pg;
-		game(sock, pg);
+		game(sock, pg,p1);
 	}
 	else if (g == "3" || g == "playground3")
 	{
 		playground3 pg;
-		game(sock, pg);
+		game(sock, pg,p1);
 	}
 }
 
 template<typename PlayGround>
-void game(tcp::socket& sock, PlayGround pg)
+void game(tcp::socket& sock, PlayGround pg,player p1)
 {
 	string n, msg;
 	boost::asio::streambuf buff;
