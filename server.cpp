@@ -7,6 +7,7 @@ using namespace boost::asio;
 using namespace ip;
 
 void connection();
+string id(tcp::socket& sock);
 string chooseGround(tcp::socket& sock);
 void game(tcp::socket& sock1, tcp::socket& sock2);
 
@@ -16,14 +17,16 @@ int main()
 }
 void connection()
 {
+	string ID1, ID2;
 	io_service io;
 	tcp::socket sock1(io);
 	tcp::socket sock2(io);
 	tcp::acceptor acc(io, tcp::endpoint(tcp::v4(), 1234));
 	acc.accept(sock1);
-	cout << "client1 is connected!\n";
+	ID1=id(sock1);
+	
 	acc.accept(sock2);
-	cout << "client2 is connected!\n";
+	ID2=id(sock2);
 
 	//---------------------
 	//id
@@ -38,6 +41,17 @@ void connection()
 
 	game(sock1, sock2);
 
+}
+string id(tcp::socket& sock) {
+	boost::asio::streambuf buffer;
+	string ID;
+
+	read_until(sock, buffer, "\n");
+	ID = buffer_cast<const char*>(buffer.data());
+	ID = ID.substr(0, ID.size() - 1);
+
+	cout << ID << " is connected\n";
+	return ID;
 }
 string chooseGround(tcp::socket& sock)
 {
@@ -79,5 +93,5 @@ void game(tcp::socket& sock1, tcp::socket& sock2)
 		read_until(sock2, bufGO2, "\n");
 		gameover = buffer_cast<const char*>(bufGO1.data());
 	}
-	cout << "game over!\n";
+	cout << "game finished!\n";
 }
