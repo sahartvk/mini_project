@@ -38,7 +38,7 @@ void playground2:: showboard() {
 bool playground2::gameover()
 {
 
-	if (check() == true)
+	if (win() == true)
 		return true;
 	if (leftMoves() == 0)
 		return true;
@@ -67,7 +67,7 @@ bool playground2::push_back(string n, string m)
 			}
 	return false;
 }
-bool playground2::check()
+bool playground2::win()
 {
 	int star = 0, numsign = 0;
 	for (int i = 0; i < 5; i++)
