@@ -11,6 +11,6 @@ private:
 	std::string name;
 	std::string playground[5][5];
 	int leftMoves();
-	bool check();
+	bool win();
 
 };
