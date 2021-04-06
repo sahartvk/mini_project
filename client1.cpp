@@ -7,48 +7,44 @@
 #include<conio.h>
 #include<thread>
 #include<chrono>
+#include<stdlib.h>
 
 int turn;
 using namespace std;
 using namespace boost::asio;
 using namespace ip;
 
-void connection(player p1);
-void chooseGroundOrNot(tcp::socket& sock, player p1);
+void connection();
+void chooseGroundOrNot(tcp::socket& sock);
 void chooseGround(tcp::socket& sock);
-void ground(tcp::socket& sock, player p1);
-void enterid(tcp::socket& sock, player p1);
+void ground(tcp::socket& sock);
+void enterid(tcp::socket& sock);
 template<typename PlayGround>
-void game(tcp::socket& sock, PlayGround pg, player p1);
+void game(tcp::socket& sock, PlayGround pg);
 
 int main()
-{
-	player p1;
-	connection(p1);
-	p1.setOff();
+{	
+	connection();
 }
-void connection(player p1)
+void connection()
 {
 	io_service io;
 	tcp::socket sock(io);
 	sock.connect(tcp::endpoint(address::from_string("127.0.0.1"), 1234));
-	enterid(sock, p1);
-
-	//-----------------
-
-	chooseGroundOrNot(sock, p1);
+	enterid(sock);
+	chooseGroundOrNot(sock);
 
 }
-void enterid(tcp::socket& sock, player p1) {
+void enterid(tcp::socket& sock) {
+	system("Color D");
 	string ID;
 	cout << "enter Your ID:" << endl;
 	cin >> ID;
 	ID += "\n";
 	write(sock, boost::asio::buffer(ID));
-	p1.setId(ID);
-	p1.setOn();
+	
 }
-void chooseGroundOrNot(tcp::socket& sock, player p1)
+void chooseGroundOrNot(tcp::socket& sock)
 {
 	boost::asio::streambuf buff;
 	read_until(sock, buff, "\n");
@@ -64,7 +60,7 @@ void chooseGroundOrNot(tcp::socket& sock, player p1)
 		turn = 2;
 	}
 
-	ground(sock, p1);
+	ground(sock);
 }
 void chooseGround(tcp::socket& sock)
 {
@@ -88,7 +84,7 @@ void chooseGround(tcp::socket& sock)
 	write(sock, boost::asio::buffer(pg));
 	system("cls");
 }
-void ground(tcp::socket& sock, player p1)
+void ground(tcp::socket& sock)
 {
 	string g;
 	boost::asio::streambuf buff;
@@ -99,13 +95,15 @@ void ground(tcp::socket& sock, player p1)
 	cout << "play ground: " << g << endl;
 	cout << "the game will start in 5 seconds!";
 	//sleep
+	system("cls");
 
 	for (int i = 5; i != 0; i--)
 	{
+		system("Color B");
 		system("cls");
-		cout << "\t\t___" << endl;
-		cout << "\t\t " << i << endl;
-		cout << "\t\t___" << endl;
+		cout << "\n\n\n\n\n\n";	
+		cout << "\t\t\t\t " << i << endl;
+		cout << "\t\t\t\t___" << endl;
 		this_thread::sleep_for(std::chrono::seconds(1));
 	}
 	system("cls");
@@ -113,23 +111,24 @@ void ground(tcp::socket& sock, player p1)
 	if (g == "1" || g == "playground1")
 	{
 		playground1 pg;
-		game(sock, pg, p1);
+		game(sock, pg);
 	}
 	else if (g == "2" || g == "playground2")
 	{
 		playground2 pg;
-		game(sock, pg, p1);
+		game(sock, pg);
 	}
 	else if (g == "3" || g == "playground3")
 	{
 		playground3 pg;
-		game(sock, pg, p1);
+		game(sock, pg);
 	}
 }
 
 template<typename PlayGround>
-void game(tcp::socket& sock, PlayGround pg, player p1)
+void game(tcp::socket& sock, PlayGround pg)
 {
+	system("Color 6");
 	string n, msg;
 	boost::asio::streambuf buff;
 
@@ -187,13 +186,20 @@ void game(tcp::socket& sock, PlayGround pg, player p1)
 
 	}
 	pg.showboard();
-	if (pg.getWinner == me)
-		cout << "you won!" << endl
-	else if (pg.getWinner == competitor)
-		cout << "you lost!" << endl;
-	else
-		cout << "no winner!" << endl;
-	cout << "press any key to exit!" << endl;
+	
+	if (pg.getWinner() == me) {
+		system("Color 2");
+		cout << "Congratulation! you win :)" << endl;
+	}
+	else if (pg.getWinner() == competitor) {
+		system("Color C");
+		cout <<  "GAME OVER :(" << endl;
+	}
+	else {
+		system("Color B");
+		cout << "No winner!" << endl;
+	}
+	cout << "\n\npress any key to exit!" << endl;
 	_getch();
 	//exit
 
