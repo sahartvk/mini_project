@@ -121,7 +121,7 @@ bool playground2::columncrossed() {
 bool playground2::win() {
 	return(rowcrossed() || columncrossed());
 }
-string playground2::getWinnner()
+string playground2::getWinner()
 {
 	return winner;
 }
