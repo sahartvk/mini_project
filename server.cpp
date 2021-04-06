@@ -1,37 +1,35 @@
 #include<iostream>
 #include<boost/asio.hpp>
 #include<string>
+#include "player.h"
 
 using namespace std;
 using namespace boost::asio;
 using namespace ip;
 
 void connection();
-string id(tcp::socket& sock);
+string id(tcp::socket& sock,player p);
 string chooseGround(tcp::socket& sock);
 void game(tcp::socket& sock1, tcp::socket& sock2);
 
 int main()
 {
+	system("Color B");
 	connection();
 }
 void connection()
 {
-	
+	player p1,p2;
 	io_service io;
 	tcp::socket sock1(io);
 	tcp::socket sock2(io);
 	tcp::acceptor acc(io, tcp::endpoint(tcp::v4(), 1234));
-	
 	acc.accept(sock1);
-	id(sock1);
-	
+    id(sock1,p1);
+
 	acc.accept(sock2);
-	id(sock2);
-
-	//---------------------
-	//id
-
+	id(sock2,p2);
+	
 	write(sock2, boost::asio::buffer("false\n"));
 	write(sock1, boost::asio::buffer("true\n"));
 	string pg = chooseGround(sock1);
@@ -41,17 +39,19 @@ void connection()
 	write(sock2, boost::asio::buffer(pg));
 
 	game(sock1, sock2);
-
+	p1.setOff();
+	p2.setOff();
 }
-string id(tcp::socket& sock) {
+string id(tcp::socket& sock,player p) {
 	boost::asio::streambuf buffer;
 	string ID;
 
 	read_until(sock, buffer, "\n");
 	ID = buffer_cast<const char*>(buffer.data());
 	ID = ID.substr(0, ID.size() - 1);
-
-	cout << ID << " is connected\n";
+	p.setId(ID);
+	p.setOn();
+	cout << ID << " is Online \n"<<endl;
 	return ID;
 }
 string chooseGround(tcp::socket& sock)
@@ -63,7 +63,7 @@ string chooseGround(tcp::socket& sock)
 	pg = buffer_cast<const char*>(buff.data());
 	pg = pg.substr(0, pg.size() - 1);
 
-	cout << "play ground " << pg << " is chosen\n";
+	cout << "playground " << pg << " is chosen\n";
 	return pg;
 }
 void game(tcp::socket& sock1, tcp::socket& sock2)
@@ -94,5 +94,5 @@ void game(tcp::socket& sock1, tcp::socket& sock2)
 		read_until(sock2, bufGO2, "\n");
 		gameover = buffer_cast<const char*>(bufGO1.data());
 	}
-	cout << "game finished!\n";
+	cout << "\ngame finished!\n";
 }
