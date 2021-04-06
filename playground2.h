@@ -7,7 +7,7 @@ public:
 	bool gameover();
 	bool push_back(std::string n, std::string m);
 	void showboard();
-	std::string getWinnner();
+	std::string getWinner();
 private:
 	std::string name;
 	std::string playground[5][5];
