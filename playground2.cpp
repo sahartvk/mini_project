@@ -25,8 +25,9 @@ playground2::playground2()
 	playground[4][0] = "N";
 	playground[4][2] = "O";
 	playground[4][4] = "P";
+	winner = "";
 }
-void playground2:: showboard() {
+void playground2::showboard() {
 	cout << "\t\t\t" << playground[0][0] << " _____" << playground[0][2] << " _____" << playground[0][4] << "\n";
 	cout << "\t\t\t|      |      |  \n";
 	cout << "\t\t\t|   " << playground[1][1] << " _" << playground[1][2] << " _" << playground[1][3] << "   |" << " \n";
@@ -67,34 +68,60 @@ bool playground2::push_back(string n, string m)
 			}
 	return false;
 }
-bool playground2::win()
-{
-	int star = 0, numsign = 0;
-	for (int i = 0; i < 5; i++)
+bool playground2::rowcrossed() {
+
+	if (playground[0][0] == playground[0][2] && playground[0][2] == playground[0][4])
 	{
-		star = 0, numsign = 0;
-		if (i == 2)
-			continue;
-		for (int j = 0; j < 5; j++)
-			if (playground[i][j] == "*")
-				star++;
-			else if (playground[i][j] == "#")
-				numsign++;
-		if (star == 3 || numsign == 3)
-			return true;
+		winner = playground[0][0];
+		return (true);
 	}
-	for (int j = 0; j < 5; j++)
+	if (playground[1][1] == playground[1][2] && playground[1][2] == playground[1][3])
 	{
-		star = 0, numsign = 0;
-		if (j == 2)
-			continue;
-		for (int i = 0; i < 5; i++)
-			if (playground[i][j] == "*")
-				star++;
-			else if (playground[i][j] == "#")
-				numsign++;
-		if (star == 3 || numsign == 3)
-			return true;
+		winner = playground[1][1];
+		return (true);
 	}
+	if (playground[3][1] == playground[3][2] && playground[3][2] == playground[3][3])
+	{
+		winner = playground[3][1];
+		return (true);
+	}
+	if (playground[4][0] == playground[4][2] && playground[4][2] == playground[4][4])
+	{
+		winner = playground[4][0];
+		return (true);
+	}
+
+	return(false);
+}
+bool playground2::columncrossed() {
+
+	if (playground[0][0] == playground[2][0] && playground[2][0] == playground[4][0])
+	{
+		winner = playground[0][0];
+		return (true);
+	}
+	if (playground[1][1] == playground[2][1] && playground[2][1] == playground[3][1])
+	{
+		winner = playground[1][1];
+		return (true);
+	}
+	if (playground[1][3] == playground[2][3] && playground[2][3] == playground[3][3])
+	{
+		winner = playground[1][3];
+		return (true);
+	}
+	if (playground[0][4] == playground[2][4] && playground[2][4] == playground[4][4])
+	{
+		winner = playground[4][0];
+		return (true);
+	}
+
 	return false;
+}
+bool playground2::win() {
+	return(rowcrossed() || columncrossed());
+}
+string playground2::getWinnner()
+{
+	return winner;
 }
