@@ -7,32 +7,51 @@
 #include<thread>
 #include<chrono>
 
+int turn;
 using namespace std;
 using namespace boost::asio;
 using namespace ip;
 
+void connection();
+void chooseGroundOrNot(tcp::socket& sock);
 void chooseGround(tcp::socket& sock);
 void ground(tcp::socket& sock);
-void game(tcp::socket& sock, playground2 pg);
-void game(tcp::socket& sock, playground1 pg);
-void game(tcp::socket& sock, playground3 pg);
+
+template<typename PlayGround>
+void game(tcp::socket& sock, PlayGround pg);
 
 int main()
 {
-	io_service io2;
-	tcp::socket sock2(io2);
-	sock2.connect(tcp::endpoint(address::from_string("127.0.0.1"), 1234));
+	connection();
+}
+void connection()
+{
+	io_service io;
+	tcp::socket sock(io);
+	sock.connect(tcp::endpoint(address::from_string("127.0.0.1"), 1234));
 
 	//-----------------
-	boost::asio::streambuf buff1, buff2;
-	read_until(sock2, buff1, "\n");
-	string msg = buffer_cast<const char*>(buff1.data());
-	if (msg == "true\n")
-		chooseGround(sock2);
-	else
-		cout << "wait for other client to choose the ground!\n";
 
-	ground(sock2);
+	chooseGroundOrNot(sock);
+
+}
+void chooseGroundOrNot(tcp::socket& sock)
+{
+	boost::asio::streambuf buff;
+	read_until(sock, buff, "\n");
+	string msg = buffer_cast<const char*>(buff.data());
+	if (msg == "true\n")
+	{
+		chooseGround(sock);
+		turn = 1;
+	}
+	else
+	{
+		cout << "wait for other client to choose the ground!\n";
+		turn = 2;
+	}
+
+	ground(sock);
 }
 void chooseGround(tcp::socket& sock)
 {
@@ -48,7 +67,7 @@ void chooseGround(tcp::socket& sock)
 		{
 			stop = false;
 			cout << "Invalid play ground, press any ket to try again\n";
-			char m=_getch();
+			char m = _getch();
 			system("cls");
 		}
 	} while (!stop);
@@ -64,6 +83,18 @@ void ground(tcp::socket& sock)
 	g = buffer_cast<const char*>(buff.data());
 	g = g.substr(0, g.size() - 1);
 
+	cout << "play ground: " << g << endl;
+	cout << "the game will start in 5 seconds!";
+	//sleep
+
+	for (int i = 5; i != 0; i--)
+	{
+		system("cls");
+		cout << "\t\t___" << endl;
+		cout << "\t\t " << i << endl;
+		cout << "\t\t___" << endl;
+		this_thread::sleep_for(std::chrono::seconds(1));
+	}
 	system("cls");
 
 	if (g == "1" || g == "playground1")
@@ -82,145 +113,38 @@ void ground(tcp::socket& sock)
 		game(sock, pg);
 	}
 }
-void game(tcp::socket& sock, playground2 pg)
+
+template<typename PlayGround>
+void game(tcp::socket& sock, PlayGround pg)
 {
 	string n, msg;
 	boost::asio::streambuf buff;
-	int turn = 2;
-	//recieve turn from server
-	//read_until(sock, buff, "\n");
-	//msg = buffer_cast<const char*>(buff.data());
-	//msg = msg.substr(0, msg.size() - 1);
-	//turn = stoi(msg);
 
-	while (pg.gameover() == false)
+	string me, competitor;
+	if (turn == 1)
 	{
-		pg.showboard();
-		bool push = false;
-		if (turn == 1)
-		{
-			do {
-
-				cout << "Your turn, enter one of the numbers:\n";
-				cin >> n;
-				//change grround
-				push = pg.push_back(n, "#");
-
-			} while (!push);
-
-			n += "\n";
-			write(sock, boost::asio::buffer(n));
-		}
-		else if (turn == 2)
-		{
-			boost::asio::streambuf buff1;
-			cout << "wait!\n";
-			read_until(sock, buff1, "\n");
-			//change
-			n = buffer_cast<const char*>(buff1.data());
-			n = n.substr(0, n.size() - 1);
-			pg.push_back(n, "*");
-
-		}
-		system("cls");
-		if (pg.gameover() == true)
-			write(sock, boost::asio::buffer("true\n"));
-		else if (pg.gameover() == false)
-			write(sock, boost::asio::buffer("false\n"));
-		if (turn == 1)
-			turn = 2;
-		else if (turn == 2)
-			turn = 1;
-
+		me = "*";
+		competitor = "#";
 	}
-	pg.showboard();
-	cout << "press any key to exit!";
-	_getch();
-	//exit
-	system("cls");
-
-}
-void game(tcp::socket& sock, playground1 pg)
-{
-	string n, msg;
-	boost::asio::streambuf buff;
-	int turn = 2;
-	//recieve turn from server
-	//read_until(sock, buff, "\n");
-	//msg = buffer_cast<const char*>(buff.data());
-	//msg = msg.substr(0, msg.size() - 1);
-	//turn = stoi(msg);
-
-	while (pg.gameover() == false)
+	else
 	{
-		pg.showboard();
-		bool push = false;
-		if (turn == 1)
-		{
-			do {
-
-				cout << "Your turn, enter one of the numbers:\n";
-				cin >> n;
-				//change grround
-				push = pg.push_back(n, "#");
-
-			} while (!push);
-
-			n += "\n";
-			write(sock, boost::asio::buffer(n));
-		}
-		else if (turn == 2)
-		{
-			boost::asio::streambuf buff1;
-			cout << "wait!\n";
-			read_until(sock, buff1, "\n");
-			//change
-			n = buffer_cast<const char*>(buff1.data());
-			n = n.substr(0, n.size() - 1);
-			pg.push_back(n, "*");
-
-		}
-		system("cls");
-		if (pg.gameover() == true)
-			write(sock, boost::asio::buffer("true\n"));
-		else if (pg.gameover() == false)
-			write(sock, boost::asio::buffer("false\n"));
-		if (turn == 1)
-			turn = 2;
-		else if(turn==2)
-			turn = 1;
-
+		me = "#";
+		competitor = "*";
 	}
-	pg.showboard();
-	cout << "press any key to exit!";
-	_getch();
-	//exit
-	system("cls");
-
-}
-void game(tcp::socket& sock, playground3 pg)
-{
-	string n, msg;
-	boost::asio::streambuf buff;
-	int turn = 2;
-	//recieve turn from server
-	//read_until(sock, buff, "\n");
-	//msg = buffer_cast<const char*>(buff.data());
-	//msg = msg.substr(0, msg.size() - 1);
-	//turn = stoi(msg);
 
 	while (pg.gameover() == false)
 	{
 		pg.showboard();
-		bool push = false;
+
 		if (turn == 1)
 		{
+			bool push = false;
 			do {
 
-				cout << "Your turn, enter one of the numbers:\n";
+				cout << "your turn, enter one of the numbers:\n";
 				cin >> n;
 				//change grround
-				push = pg.push_back(n, "#");
+				push = pg.push_back(n, me);
 
 			} while (!push);
 
@@ -235,7 +159,7 @@ void game(tcp::socket& sock, playground3 pg)
 			//change
 			n = buffer_cast<const char*>(buff1.data());
 			n = n.substr(0, n.size() - 1);
-			pg.push_back(n, "*");
+			pg.push_back(n, competitor);
 
 		}
 		system("cls");

@@ -6,19 +6,23 @@ using namespace std;
 using namespace boost::asio;
 using namespace ip;
 
+void connection();
 string chooseGround(tcp::socket& sock);
 void game(tcp::socket& sock1, tcp::socket& sock2);
 
 int main()
 {
-	io_service io1, io2;
-	tcp::socket sock1(io1);
-	tcp::socket sock2(io2);
-	tcp::acceptor acc1(io1,tcp::endpoint(tcp::v4(), 1234));
-	tcp::acceptor acc2(io2, tcp::endpoint(tcp::v4(), 1234));
-	acc1.accept(sock1);
+	connection();
+}
+void connection()
+{
+	io_service io;
+	tcp::socket sock1(io);
+	tcp::socket sock2(io);
+	tcp::acceptor acc(io, tcp::endpoint(tcp::v4(), 1234));
+	acc.accept(sock1);
 	cout << "client1 is connected!\n";
-	acc1.accept(sock2);
+	acc.accept(sock2);
 	cout << "client2 is connected!\n";
 
 	//---------------------
@@ -27,7 +31,7 @@ int main()
 	write(sock2, boost::asio::buffer("false\n"));
 	write(sock1, boost::asio::buffer("true\n"));
 	string pg = chooseGround(sock1);
-	
+
 	pg += "\n";
 	write(sock1, boost::asio::buffer(pg));
 	write(sock2, boost::asio::buffer(pg));
@@ -49,16 +53,13 @@ string chooseGround(tcp::socket& sock)
 }
 void game(tcp::socket& sock1, tcp::socket& sock2)
 {
-	string msg,gameover="false\n";
+	string msg, gameover = "false\n";
 	int turn = 1;
-	//write(sock1, boost::asio::buffer("1\n"));
-	//write(sock2, boost::asio::buffer("2\n"));
 
-
-	while (gameover=="false\n")
+	while (gameover == "false\n")
 	{
 		boost::asio::streambuf buff1, buff2, bufGO1, bufGO2;
-		if (turn==1)
+		if (turn == 1)
 		{
 			read_until(sock1, buff1, "\n");
 			msg = buffer_cast<const char*>(buff1.data());
@@ -66,7 +67,7 @@ void game(tcp::socket& sock1, tcp::socket& sock2)
 			turn = 2;
 
 		}
-		else if (turn==2)
+		else if (turn == 2)
 		{
 			read_until(sock2, buff2, "\n");
 			msg = buffer_cast<const char*>(buff2.data());
