@@ -23,19 +23,20 @@ void game(tcp::socket& sock, PlayGround pg, player p1);
 
 int main()
 {
-	player p2;
-	connection(p2);
-	p2.setOff();
+	player p1;
+	connection(p1);
+	p1.setOff();
 }
 void connection(player p1)
 {
 	io_service io;
 	tcp::socket sock(io);
 	sock.connect(tcp::endpoint(address::from_string("127.0.0.1"), 1234));
-	enterid(sock,p1);
+	enterid(sock, p1);
+
 	//-----------------
 
-	chooseGroundOrNot(sock,p1);
+	chooseGroundOrNot(sock, p1);
 
 }
 void enterid(tcp::socket& sock, player p1) {
@@ -47,7 +48,7 @@ void enterid(tcp::socket& sock, player p1) {
 	p1.setId(ID);
 	p1.setOn();
 }
-void chooseGroundOrNot(tcp::socket& sock,player p1)
+void chooseGroundOrNot(tcp::socket& sock, player p1)
 {
 	boost::asio::streambuf buff;
 	read_until(sock, buff, "\n");
@@ -63,7 +64,7 @@ void chooseGroundOrNot(tcp::socket& sock,player p1)
 		turn = 2;
 	}
 
-	ground(sock,p1);
+	ground(sock, p1);
 }
 void chooseGround(tcp::socket& sock)
 {
@@ -78,7 +79,7 @@ void chooseGround(tcp::socket& sock)
 		if (!(pg == "1" || pg == "playground1" || pg == "2" || pg == "playground2" || pg == "playground3" || pg == "3"))
 		{
 			stop = false;
-			cout << "Invalid play ground, press any key to try again\n";
+			cout << "Invalid play ground, press any ket to try again\n";
 			char m = _getch();
 			system("cls");
 		}
@@ -87,7 +88,7 @@ void chooseGround(tcp::socket& sock)
 	write(sock, boost::asio::buffer(pg));
 	system("cls");
 }
-void ground(tcp::socket& sock,player p1)
+void ground(tcp::socket& sock, player p1)
 {
 	string g;
 	boost::asio::streambuf buff;
@@ -112,22 +113,22 @@ void ground(tcp::socket& sock,player p1)
 	if (g == "1" || g == "playground1")
 	{
 		playground1 pg;
-		game(sock, pg,p1);
+		game(sock, pg, p1);
 	}
 	else if (g == "2" || g == "playground2")
 	{
 		playground2 pg;
-		game(sock, pg,p1);
+		game(sock, pg, p1);
 	}
 	else if (g == "3" || g == "playground3")
 	{
 		playground3 pg;
-		game(sock, pg,p1);
+		game(sock, pg, p1);
 	}
 }
 
 template<typename PlayGround>
-void game(tcp::socket& sock, PlayGround pg,player p1)
+void game(tcp::socket& sock, PlayGround pg, player p1)
 {
 	string n, msg;
 	boost::asio::streambuf buff;
@@ -153,7 +154,7 @@ void game(tcp::socket& sock, PlayGround pg,player p1)
 			bool push = false;
 			do {
 
-				cout << "your turn, enter one of the chracters:\n";
+				cout << "your turn, enter one of the characters:\n";
 				cin >> n;
 				//change grround
 				push = pg.push_back(n, me);
@@ -186,9 +187,16 @@ void game(tcp::socket& sock, PlayGround pg,player p1)
 
 	}
 	pg.showboard();
-	cout << "press any key to exit!";
+	if (pg.getWinner == me)
+		cout << "you won!" << endl
+	else if (pg.getWinner == competitor)
+		cout << "you lost!" << endl;
+	else
+		cout << "no winner!" << endl;
+	cout << "press any key to exit!" << endl;
 	_getch();
 	//exit
+
 	system("cls");
 
 }
