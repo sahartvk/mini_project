@@ -31,7 +31,8 @@ playground3::playground3()
 	playground[5][5] = "T";
 	playground[6][0] = "U";
 	playground[6][6] = "V";
-	
+	winner = "";
+
 }
 void playground3::showboard()
 {
@@ -83,17 +84,35 @@ bool playground3::push_back(string n, string m)
 bool playground3::rowcrossed()
 {
 	if (playground[0][0] == playground[0][3] && playground[0][3] == playground[0][6])
+	{
+		winner = playground[0][0];
 		return true;
+	}
 	else if (playground[1][1] == playground[1][3] && playground[1][3] == playground[1][5])
+	{
+		winner = playground[1][1];
 		return true;
+	}
 	else if (playground[2][2] == playground[2][3] && playground[2][3] == playground[2][4])
+	{
+		winner = playground[2][2];
 		return true;
+	}
 	else if (playground[3][0] == playground[3][1] && playground[3][1] == playground[3][2])
+	{
+		winner = playground[3][0];
 		return true;
+	}
 	else if (playground[3][4] == playground[3][5] && playground[3][5] == playground[3][6])
+	{
+		winner = playground[3][4];
 		return true;
+	}
 	else if (playground[4][2] == playground[4][3] && playground[4][3] == playground[4][4])
+	{
+		winner = playground[4][2];
 		return true;
+	}
 
 	return(false);
 }
@@ -101,31 +120,68 @@ bool playground3::rowcrossed()
 bool playground3::columncrossed()
 {
 	if (playground[0][0] == playground[3][0] && playground[3][0] == playground[6][0])
+	{
+		winner = playground[0][0];
 		return true;
+	}
 	else if (playground[1][1] == playground[3][1] && playground[3][1] == playground[5][1])
+	{
+		winner = playground[1][1];
 		return true;
+	}
 	else if (playground[2][2] == playground[3][2] && playground[3][2] == playground[4][2])
+	{
+		winner = playground[2][2];
 		return true;
+	}
 	else if (playground[0][3] == playground[1][3] && playground[1][3] == playground[2][3])
+	{
+		winner = playground[0][3];
 		return true;
+	}
 	else if (playground[2][4] == playground[3][4] && playground[3][4] == playground[4][4])
+	{
+		winner = playground[2][4];
 		return true;
+	}
 	else if (playground[1][5] == playground[3][5] && playground[3][5] == playground[5][5])
+	{
+		winner = playground[1][5];
 		return true;
+	}
 	else if (playground[0][6] == playground[3][6] && playground[3][6] == playground[6][6])
+	{
+		winner = playground[0][6];
 		return true;
+	}
 	return(false);
 }
 bool playground3::diagonalcrossed() {
 
 	if (playground[0][0] == playground[1][1] && playground[1][1] == playground[2][2])
+	{
+		winner = playground[0][0];
 		return true;
+	}
 	if (playground[0][6] == playground[1][5] && playground[1][5] == playground[2][4])
+	{
+		winner = playground[0][6];
 		return true;
+	}
 	if (playground[4][2] == playground[5][1] && playground[5][1] == playground[6][3])
+	{
+		winner = playground[4][2];
 		return true;
+	}
 	if (playground[4][4] == playground[5][5] && playground[5][5] == playground[6][6])
+	{
+		winner = playground[4][4];
 		return true;
+	}
 	return false;
+}
+string playground3::getWinner()
+{
+	return winner;
 }
 

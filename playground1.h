@@ -5,8 +5,8 @@ public:
 	playground1();
 	void showboard();
 	bool gameover();
-	bool win();
 	bool push_back(std::string n, std::string m);
+	std::string getWinner();
 
 private:
 	std::string name;
@@ -15,4 +15,6 @@ private:
 	bool rowcrossed();
 	bool columncrossed();
 	bool diagonalcrossed();
+	std::string winner;
+	bool win();
 };

@@ -14,19 +14,20 @@ playground1::playground1() {
 	playground[2][0] = "G";
 	playground[2][1] = "H";
 	playground[2][2] = "I";
+	winner = "";
 }
 void playground1::showboard() {
-	cout<<"\n\n";
+	cout << "\n\n";
 
 	cout << "\t\t\t" << playground[0][0] << " | " << playground[0][1] << " | " << playground[0][2] << "\n";
-	cout<<"\t\t\t--------------\n";
+	cout << "\t\t\t--------------\n";
 	cout << "\t\t\t " << playground[1][0] << " | " << playground[1][1] << " | " << playground[1][2] << " \n";
-	cout<<"\t\t\t--------------\n";
+	cout << "\t\t\t--------------\n";
 	cout << "\t\t\t " << playground[2][0] << " | " << playground[2][1] << " | " << playground[2][2] << " \n\n";
 	return;
 }
 
-bool playground1::gemeover() {
+bool playground1::gameover() {
 	if (win() == true)
 		return true;
 	if (leftMoves() == 0)
@@ -61,27 +62,42 @@ bool playground1::push_back(string n, string m) {
 bool playground1::rowcrossed() {
 	for (int i = 0; i < 3; i++)
 	{
-		if (playground[i][0] == playground[i][1] && playground[i][1] == playground[i][2] )
+		if (playground[i][0] == playground[i][1] && playground[i][1] == playground[i][2])
+		{
+			winner = playground[i][0];
 			return (true);
+		}
 	}
 	return(false);
 }
 
-bool playground1:: columncrossed() {
+bool playground1::columncrossed() {
 	for (int i = 0; i < 3; i++)
 	{
-		if (playground[0][i] == playground[1][i] && playground[1][i] == playground[2][i] )
+		if (playground[0][i] == playground[1][i] && playground[1][i] == playground[2][i])
+		{
+			winner = playground[0][i];
 			return (true);
+		}
 	}
 	return(false);
 }
 
 bool playground1::diagonalcrossed() {
-	if (playground[0][0] == playground[1][1] && playground[1][1] == playground[2][2] )
+	if (playground[0][0] == playground[1][1] && playground[1][1] == playground[2][2])
+	{
+		winner = playground[0][0];
 		return(true);
+	}
 
-	if (playground[0][2] == playground[1][1] && playground[1][1] == playground[2][0] )
+	if (playground[0][2] == playground[1][1] && playground[1][1] == playground[2][0])
+	{
+		winner = playground[0][2];
 		return(true);
-
+	}
 	return(false);
+}
+string playground1::getWinner()
+{
+	return winner;
 }
