@@ -6,11 +6,11 @@ public:
 	void showboard();
 	bool gameover();
 	bool win();
-	bool push_back(string n, string m);
-	
+	bool push_back(std::string n, std::string m);
+
 private:
-	string name;
-	string playground[3][3];
+	std::string name;
+	std::string playground[3][3];
 	int leftMoves();
 	bool rowcrossed();
 	bool columncrossed();
