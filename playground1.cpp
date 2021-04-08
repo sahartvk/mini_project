@@ -20,9 +20,9 @@ void playground1::showboard() {
 	cout << "\n\n";
 
 	cout << "\t\t\t " << playground[0][0] << " | " << playground[0][1] << " | " << playground[0][2] << "\n";
-	cout << "\t\t\t--------------\n";
+	cout << "\t\t\t-----------\n";
 	cout << "\t\t\t " << playground[1][0] << " | " << playground[1][1] << " | " << playground[1][2] << " \n";
-	cout << "\t\t\t--------------\n";
+	cout << "\t\t\t-----------\n";
 	cout << "\t\t\t " << playground[2][0] << " | " << playground[2][1] << " | " << playground[2][2] << " \n\n";
 	return;
 }
