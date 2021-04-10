@@ -36,14 +36,24 @@ playground3::playground3()
 }
 void playground3::showboard()
 {
-	printf("\n\n");
-	cout << "\t\t\t" << playground[0][0] << "\t\t\t" << playground[0][3] << " \t\t\t " << playground[0][6] << " \n\n";
-	cout << "\t\t\t\t " << playground[1][1] << "\t\t " << playground[1][3] << " \t\t " << playground[1][5] << " \n\n";
-	cout << "\t\t\t\t\t " << playground[2][2] << "t " << playground[2][3] << " \t " << playground[2][4] << " \n\n";
-	cout << "\t\t\t " << playground[3][0] << "\t" << playground[3][1] << "\t " << playground[3][2] << "\t \t  " << playground[3][4] << " \t " << playground[3][5] << " \t " << playground[3][6] << "\n\n";
-	cout << "\t\t\t\t\t " << playground[4][2] << "\t " << playground[4][3] << " \t " << playground[4][4] << " \n\n";
-	cout << "\t\t\t\t " << playground[5][1] << "\t\t    \t\t " << playground[5][5] << " \n\n";
-	cout << "\t\t\t " << playground[6][0] << "\t\t\t    \t\t\t " << playground[6][6] << " \n";
+printf("\n\n");
+	cout << "\t\t\t " << playground[0][0] << " _____________________ " << playground[0][3] << " _____________________ " << playground[0][6] << " \n";
+	cout<<"\t\t\t | \\\t\t\t |\t\t       / |"<<endl;
+	cout<<"\t\t\t |   \\\t\t\t |\t\t     /   |"<<endl;
+	cout << "\t\t\t |  \t " << playground[1][1] << "______________ " << playground[1][3] << " _____________ " << playground[1][5] << "\t | \n";
+	cout<<"\t\t\t |\t | \\\t\t |\t       / |\t |"<<endl;
+	cout<<"\t\t\t |\t |   \\\t\t |\t     /   |\t |"<<endl;
+	cout << "\t\t\t |\t |\t " << playground[2][2] << " _____ " << playground[2][3] <<" _____ " << playground[2][4] << "\t | \t | \n";
+	cout<<"\t\t\t |\t |\t | \t\t | \t | \t |"<<endl;
+	cout << "\t\t\t " << playground[3][0] << " _____ " << playground[3][1] <<" _____ "<< playground[3][2] << "\t \t " << playground[3][4] << " _____ " << playground[3][5] << " _____ " << playground[3][6] << "\n";
+	cout<<"\t\t\t |\t |\t | \t\t | \t | \t |"<<endl;
+	cout << "\t\t\t |\t |\t " << playground[4][2] << " _____ " << playground[4][3] << " _____ " << playground[4][4] << "\t | \t |\n";
+        cout<<"\t\t\t |\t |   /\t\t\t     \\   |\t |"<<endl;
+	cout<<"\t\t\t |\t | /\t\t\t       \\ |\t |"<<endl;
+	cout << "\t\t\t |\t " << playground[5][1] << " _____________________________ " << playground[5][5] << "\t | \n";
+	cout<<"\t\t\t |    /\t\t\t\t\t    \\    |"<<endl;
+	cout<<"\t\t\t |  /\t\t\t\t\t      \\  |"<<endl;
+	cout << "\t\t\t " << playground[6][0] << " ______________________________________________" << playground[6][6] << "\t |\n";
 }
 
 bool playground3::gameover()
