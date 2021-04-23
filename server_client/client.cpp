@@ -126,8 +126,8 @@ void ground(tcp::socket& sock)
 	g = g.substr(0, g.size() - 1);
 	system("cls");
 	cout <<ANSI_COLOR_GREEN "play ground: " << g << endl;
-	cout << "the game will start in 5 seconds!\npress any key to start";
-	_getch();
+	cout << "the game will start in 5 seconds!\n";
+	this_thread::sleep_for(std::chrono::seconds(2));
 	//sleep
 	
 	for (int i = 5; i != 0; i--)
