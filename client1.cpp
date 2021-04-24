@@ -3,7 +3,7 @@
 #include"playground2.h"
 #include"playground1.h"
 #include"playground3.h"
-#include"player.h"
+//#include"player.h"
 #include<conio.h>
 #include<thread>
 #include<chrono>
@@ -21,9 +21,10 @@ void ground(tcp::socket& sock);
 void enterid(tcp::socket& sock);
 template<typename PlayGround>
 void game(tcp::socket& sock, PlayGround pg);
+void timer(string& n);
 
 int main()
-{	
+{
 	connection();
 }
 void connection()
@@ -42,7 +43,7 @@ void enterid(tcp::socket& sock) {
 	cin >> ID;
 	ID += "\n";
 	write(sock, boost::asio::buffer(ID));
-	
+
 }
 void chooseGroundOrNot(tcp::socket& sock)
 {
@@ -101,7 +102,7 @@ void ground(tcp::socket& sock)
 	{
 		system("Color B");
 		system("cls");
-		cout << "\n\n\n\n\n\n";	
+		cout << "\n\n\n\n\n\n";
 		cout << "\t\t\t\t " << i << endl;
 		cout << "\t\t\t\t___" << endl;
 		this_thread::sleep_for(std::chrono::seconds(1));
@@ -144,41 +145,78 @@ void game(tcp::socket& sock, PlayGround pg)
 		competitor = "*";
 	}
 
-	while (pg.gameover() == false)
+	bool timer_finish = false;
+	string time_loser = "";
+	while (pg.gameover() == false && timer_finish == false)
 	{
-		pg.showboard();
+		int i;
 
 		if (turn == 1)
 		{
 			bool push = false;
-			do {
-
+			//i
+			n = "";
+			thread _timer(timer, ref(n));
+			for (i = 1; i <= 20; i++)
+			{
+				pg.showboard();
 				cout << "your turn, enter one of the characters:\n";
-				cin >> n;
 				//change grround
 				push = pg.push_back(n, me);
+				if (push == true)
+				{
+					_timer.detach();
+					_timer.~thread();
+					break;
+				}
+				cout << "\t\t__\n";
+				cout << "\t\t" << i << endl;
+				cout << "\t\t__" << endl;
+				this_thread::sleep_for(std::chrono::seconds(1));
+				system("cls");
 
-			} while (!push);
+			}
+			if (push == false)
+			{
+				_timer.detach();
+				_timer.~thread();
+			}
 
-			n += "\n";
-			write(sock, boost::asio::buffer(n));
+			if (i < 20)
+			{
+				n += "\n";
+				write(sock, boost::asio::buffer(n));
+			}
+			else
+			{
+				n = "i==20\n";
+				write(sock, boost::asio::buffer(n));
+				timer_finish = true;
+				time_loser = me;
+			}
 		}
 		else if (turn == 2)
 		{
+
+			pg.showboard();
 			boost::asio::streambuf buff1;
 			cout << "wait!\n";
 			read_until(sock, buff1, "\n");
 			//change
 			n = buffer_cast<const char*>(buff1.data());
 			n = n.substr(0, n.size() - 1);
-			pg.push_back(n, competitor);
+			if (n == "i==20")
+				timer_finish = true;
+			else
+				pg.push_back(n, competitor);
 
 		}
 		system("cls");
-		if (pg.gameover() == true)
+		if (pg.gameover() == true || timer_finish == true)
 			write(sock, boost::asio::buffer("true\n"));
 		else if (pg.gameover() == false)
 			write(sock, boost::asio::buffer("false\n"));
+
 		if (turn == 1)
 			turn = 2;
 		else if (turn == 2)
@@ -186,14 +224,27 @@ void game(tcp::socket& sock, PlayGround pg)
 
 	}
 	pg.showboard();
-	
+
 	if (pg.getWinner() == me) {
 		system("Color 2");
-		cout << "Congratulation! you win :)" << endl;
+		cout << "Congratulation! you won :)" << endl;
 	}
 	else if (pg.getWinner() == competitor) {
 		system("Color C");
-		cout <<  "GAME OVER :(" << endl;
+		cout << "YOU LOST :(" << endl;
+	}
+	else if (timer_finish == true)
+	{
+		if (time_loser == "")
+		{
+			system("Color 2");
+			cout << "Congratulation! you won :)" << endl;
+		}
+		else if (time_loser == me)
+		{
+			system("Color C");
+			cout << "time is up!  YOU LOST :(" << endl;
+		}
 	}
 	else {
 		system("Color B");
@@ -201,8 +252,16 @@ void game(tcp::socket& sock, PlayGround pg)
 	}
 	cout << "\n\npress any key to exit!" << endl;
 	_getch();
-	//exit
-
 	system("cls");
+	//exit
+	//exit(0);
+}
 
+void timer(string& n)
+{
+	while (1)
+	{
+		cin >> n;
+		this_thread::sleep_for(std::chrono::seconds(1));
+	}
 }
